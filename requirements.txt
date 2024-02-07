@@ -1,0 +1,6 @@
+numpy==1.26.3
+pillow==10.2.0
+pyserial @ file:///home/conda/feedstock_root/build_artifacts/pyserial_1606128640882/work
+setuptools==68.2.2
+six==1.16.0
+wheel==0.41.2
