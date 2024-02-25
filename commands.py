@@ -39,10 +39,9 @@ class Printer:
             self.printer.write(constants.WIDE_FONT)
         self.printer.write(message.encode(ENCODING))
 
-    def write_bitmap_mode(self, filename, convert=True, width_density=False):
+    def write_bitmap_mode(self, image, convert=True, width_density=False):
         """Escritura en modo bitmap
         """
-        image = Image.open(filename)
         if convert:
             # Convertimos la imagen a escala de grises, luego a blanco y negro
             # e invertimos, ya que para la impresora 1 es negro y 0 es blanco.

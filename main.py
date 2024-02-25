@@ -3,6 +3,7 @@ import serial
 import sys
 
 import constants
+from PIL import Image
 from commands import Printer
 
 
@@ -11,17 +12,24 @@ if __name__ == "__main__":
     print("Listado de archivos disponibles:")
     for i, draw in enumerate(draws): 
         print(f"[{i}] {draw}")
+    print(f"[{i+1}] Escribir: ")
     selection = int(input("Seleccionar número de archivo: "))
-    filename = draws[selection]
-
     printer = Printer()
     printer.reset()
-    if filename.endswith(".txt"):
-        printer.write_print_mode(os.path.join("draws", filename))
-    elif filename.endswith(".png"):
-        printer.write_bitmap_mode(os.path.join("draws", filename))
-    elif filename.endswith(".py"):
-        raise NotImplemenetedError("Aún no implementado")
+    if selection == i+1:
+        text = input("Texto: ")
+        printer.write_print_mode(text)
     else:
-        print("Archivo no soportado")
-    printer.close()
+        filename = draws[selection]
+
+        if filename.endswith(".txt"):
+            with open(os.path.join("draws", filename), "rb") as file:
+                printer.write_print_mode(file)
+        elif filename.endswith(".png"):
+            image = Image.open(os.path.join("draws", filename))
+            printer.write_bitmap_mode(image)
+        elif filename.endswith(".py"):
+            raise NotImplemenetedError("Aún no implementado")
+        else:
+            print("Archivo no soportado")
+        printer.close()
