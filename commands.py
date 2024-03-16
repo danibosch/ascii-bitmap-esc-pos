@@ -20,6 +20,11 @@ class Printer:
         self.printer.write(constants.LF)
         self.printer.write(constants.LF)
         self.printer.write(constants.LF)
+        self.printer.write(constants.LF)
+        self.printer.write(constants.LF)
+        self.printer.write(constants.LF)
+        self.printer.write(constants.LF)
+        self.printer.write(constants.LF)
         self.printer.write(constants.PARTIAL_CUT)
 
     def full_cut(self):
@@ -37,11 +42,14 @@ class Printer:
         """
         if wide:
             self.printer.write(constants.WIDE_FONT)
+        if len(message) % constants.BUFFER_SIZE < constants.BUFFER_SIZE:
+            message = message.ljust(constants.BUFFER_SIZE - len(message) % constants.BUFFER_SIZE, " ")
         self.printer.write(message.encode(ENCODING))
 
-    def write_bitmap_mode(self, image, convert=True, width_density=False):
+    def write_bitmap_mode(self, image, convert=True, width_density=False, cut=False):
         """Escritura en modo bitmap
         """
+        image = Image.open(image)
         if convert:
             # Convertimos la imagen a escala de grises, luego a blanco y negro
             # e invertimos, ya que para la impresora 1 es negro y 0 es blanco.
@@ -79,6 +87,7 @@ class Printer:
         for i, chunk in enumerate(chunks):
             self.printer.write(constants.BMP_HEADER + m + n1n2 + chunk + b"\n")
         
+        self.printer.write(constants.LF)
         self.printer.write(constants.LINEFEED_RESET)
 
     def close(self):

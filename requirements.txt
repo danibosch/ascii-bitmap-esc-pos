@@ -1,4 +1,5 @@
 numpy==1.26.3
+opencv-python==4.9.0
 pillow==10.2.0
 pyserial @ file:///home/conda/feedstock_root/build_artifacts/pyserial_1606128640882/work
 setuptools==68.2.2
