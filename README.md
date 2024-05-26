@@ -26,26 +26,26 @@ Impresión de imágenes Ascii y bitmap usando comandos ESC/POS.
 
 ```bash
 $ cd ascii-bitmap-esc-pos
-ascii-bitmap-esc-pos$ virtualenv epsonenv
-ascii-bitmap-esc-pos$ source epsonenv/bin/activate
-(epsonenv) ascii-bitmap-esc-pos$ pip install -r requirements.txt
+ascii-bitmap-esc-pos$ virtualenv venv
+ascii-bitmap-esc-pos$ source venv/bin/activate
+(venv) ascii-bitmap-esc-pos$ pip install -r requirements.txt
 ```
 
 1.2. Con conda (o miniconda)
 
 ```bash
 $ cd ascii-bitmap-esc-pos
-ascii-bitmap-esc-pos$ conda create --name epsonenv
-ascii-bitmap-esc-pos$ conda activate epsonenv
-(epsonenv) ascii-bitmap-esc-pos$ conda install -c conda-forge --yes --file requirements.txt
+ascii-bitmap-esc-pos$ conda create --name venv
+ascii-bitmap-esc-pos$ conda activate venv
+(venv) ascii-bitmap-esc-pos$ conda install -c conda-forge --yes --file requirements.txt
 ```
 o
 ```bash
-(epsonenv) ascii-bitmap-esc-pos$ pip install -r requirements.txt
+(venv) ascii-bitmap-esc-pos$ pip install -r requirements.txt
 ``` 
 
 2. Ejecutar
 ```bash
-(epsonenv) ascii-bitmap-esc-pos$ cd src
-(epsonenv) ascii-bitmap-esc-pos/src$ python main.py
+(venv) ascii-bitmap-esc-pos$ cd src
+(venv) ascii-bitmap-esc-pos/src$ python main.py
 ```

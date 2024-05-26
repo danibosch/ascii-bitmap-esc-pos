@@ -12,7 +12,7 @@ from commands import Printer
 
 
 def manual_mode():
-    pass
+    raise NotImplemenetedError("Aún no implementado")
 
 
 def directory_mode():
@@ -38,7 +38,7 @@ def directory_mode():
             if filename.endswith(".txt"):
                 with open(os.path.join("draws", filename), "rb") as file:
                     printer.write_print_mode(file)
-            elif filename.endswith(".png"):
+            elif filename.lower().endswith(".png"):
                 printer.write_bitmap_mode(os.path.join("draws", filename))
             elif filename.endswith(".py"):
                 raise NotImplemenetedError("Aún no implementado")
@@ -53,7 +53,6 @@ def selfie_mode():
     stream.set(cv2.CAP_PROP_FRAME_WIDTH, 250)
     stream.set(cv2.CAP_PROP_FRAME_HEIGHT, 200)
     ret, frame = stream.read()
-    one = cv2.imread("3.png")
     mode = 1
     print("[Enter o Space] Tomar una foto")
 
