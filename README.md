@@ -1,10 +1,14 @@
 # ascii-bitmap-esc-pos
-Impresión de imágenes Ascii y bitmap usando comandos ESC/POS.
+Impresión de imágenes ASCII y bitmap usando comandos ESC/POS.
 
+![1bit-image](./docs/example_1.jpg)
 
-## Modelos soportados/testeados
+## Modelos soportados
 
-- Epson TM-300A
+- Epson TM-300A (testeado)
+- Epson TM-300B 
+- Epson TM-300PA 
+- Epson TM-300PB
 
 
 ## Requerimientos
