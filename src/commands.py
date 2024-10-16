@@ -34,17 +34,33 @@ class Printer:
         self.printer.write(constants.LF)
         self.printer.write(constants.LF)
         self.printer.write(constants.LF)
+        self.printer.write(constants.LF)
+        self.printer.write(constants.LF)
+        self.printer.write(constants.LF)
+        self.printer.write(constants.LF)
+        self.printer.write(constants.LF)
         self.printer.write(constants.FULL_CUT)
 
 
-    def write_print_mode(self, message, wide=True):
+    def write_print_mode(self, filename):
         """Escritura en modo texto
         """
-        if wide:
-            self.printer.write(constants.WIDE_FONT)
-        if len(message) % constants.BUFFER_SIZE < constants.BUFFER_SIZE:
-            message = message.ljust(constants.BUFFER_SIZE - len(message) % constants.BUFFER_SIZE, " ")
-        self.printer.write(message.encode(ENCODING))
+        with open(filename, "r") as lines:
+            if len([x for x in lines if len(x) > constants.LINE_WIDTH_WIDE]) > 0:
+                width = constants.LINE_WIDTH_NORMAL
+            else:
+                self.printer.write(constants.WIDE_FONT)
+                width = constants.LINE_WIDTH_WIDE
+            message = ""
+
+        with open(filename, "r") as lines:
+            for line in lines:
+                if len(line) <= width:
+                    message += line.ljust(len(line) % width, " ")
+                else:
+                    print(f"Warning: cada línea debe ser tener {width} caracteres o menos")
+                    message += line[:width]
+            self.printer.write(message.encode(ENCODING))
 
     def write_bitmap_mode(self, image, convert=True, width_density=False, cut=False):
         """Escritura en modo bitmap

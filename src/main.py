@@ -4,6 +4,8 @@ import sys
 import cv2
 import numpy as np
 import time
+import re
+import argparse
 from PIL import Image
 from datetime import datetime
 
@@ -22,28 +24,33 @@ def directory_mode():
         print(f"")
         for i, draw in enumerate(draws): 
             print(f"    [{i}] {draw}")
-        print(f"    [{i+1}] Escribir: ")
         print(f"")
-        print(f"    [Q] Volver al menú anterior ")
+        print(f"    [Q] Salir ")
         selection = input(">> ")
 
-        if selection == str(int(i)+1):
-            text = input("Texto: ")
-            printer.write_print_mode(text)
-        elif selection.lower() == "q":
+        # if selection == str(int(i)+1):
+        #     text = input("Texto: ")
+        #     printer.write_print_mode(text)
+        if selection.lower() == "q":
             break
+        elif not re.search("^[0-9]+$", selection):
+            print("Opción no válida")
+            continue
+        elif int(selection) >= len(draws):
+            print("Opción no valida")
+            continue
         else:
             filename = draws[int(selection)]
-
+            print("Imprimiendo...")
             if filename.endswith(".txt"):
-                with open(os.path.join("draws", filename), "rb") as file:
-                    printer.write_print_mode(file)
+                printer.write_print_mode(os.path.join("draws", filename))
             elif filename.lower().endswith(".png"):
                 printer.write_bitmap_mode(os.path.join("draws", filename))
             elif filename.endswith(".py"):
                 raise NotImplemenetedError("Aún no implementado")
             else:
                 print("Archivo no soportado")
+            printer.full_cut()
 
 
 def selfie_mode():
@@ -99,27 +106,17 @@ def selfie_mode():
 if __name__ == "__main__":
     printer = Printer()
     printer.reset()
-    while True:
-        mode = input(
-            "Elegir modo:\n"
-            "\n"
-            "  [1] Cargar archivos para imprimir\n"
-            "  [2] Selfie\n"
-            "  [3] Comandos manuales\n"
-            "\n"
-            "  [Q] Salir\n"
-            ">> "
-        )
-        if mode == "1":
-            directory_mode()
-        elif mode == "2":
-            selfie_mode()
-        elif mode == "3":
-            manual_mode()
-        elif mode.lower() == "q":
-            break
-        else:
-            print("Modo desconocido")
 
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", type=str, default="archivos")
+    args = parser.parse_args()
+    if args.mode == "archivos":
+        directory_mode()
+    elif args.mode == "foto":
+        selfie_mode()
+    elif args.mode == "manual":
+        manual_mode()
+    else:
+        print("Modo desconocido, elija entre las opciones: archivos, foto, manual ")
 
     printer.close()

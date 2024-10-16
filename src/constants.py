@@ -3,6 +3,8 @@
 # =======================
 
 BUFFER_SIZE = 40
+LINE_WIDTH_NORMAL = 40
+LINE_WIDTH_WIDE = 34
 
 # =======================
 #  ASCII codes
