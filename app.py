@@ -1,8 +1,8 @@
 import argparse
 
-from commands import Printer
-from modes.directory import DirectoryMode
-from modes.photo import PhotoMode
+from src.serials.escpos_printer import Printer
+from src.modes.directory import DirectoryMode
+from src.modes.photo import PhotoMode
 
 
 if __name__ == "__main__":

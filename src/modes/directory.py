@@ -1,9 +1,8 @@
 import os
 import re
 import json
-from importlib import import_module
 
-from modes.base import BaseMode
+from src.modes.base import BaseMode
 
 
 class DirectoryMode(BaseMode):
