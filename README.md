@@ -1,7 +1,7 @@
 # ascii-bitmap-esc-pos
 Impresión de imágenes ASCII y bitmap usando comandos ESC/POS.
 
-![1bit-image](./docs/example_1.jpg)
+![1bit-image](./docs/example.jpg)
 
 ## Modelos soportados
 
@@ -49,7 +49,19 @@ o
 ``` 
 
 2. Ejecutar
+
+2.1. Ejecutar impresión de imagen ASCII
 ```bash
-(venv) ascii-bitmap-esc-pos$ cd src
-(venv) ascii-bitmap-esc-pos/src$ python main.py
+(venv) ascii-bitmap-esc-pos$ python app.py --modo archivos
+```
+
+2.2. Ejecutar modo selfie
+```bash
+(venv) ascii-bitmap-esc-pos$ python app.py --modo foto
+```
+
+2.3. Ejecutar con wrappers para eventos
+```bash
+(venv) ascii-bitmap-esc-pos$ python app.py --modo archivos --evento <nombre_del_evento>
+(venv) ascii-bitmap-esc-pos$ python app.py --modo foto --evento <nombre_del_evento>
 ```
