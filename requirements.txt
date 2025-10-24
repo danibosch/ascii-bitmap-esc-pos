@@ -2,6 +2,7 @@ numpy==1.26.3
 opencv-python==4.9.0.80
 pillow==10.2.0
 pyserial==3.5
+serial==0.0.97
 setuptools==68.2.2
 six==1.16.0
 wheel==0.41.2
