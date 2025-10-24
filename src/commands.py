@@ -1,14 +1,15 @@
 import serial
 import six
+import time
 from PIL import Image, ImageOps
 
 import constants
-from settings import SERIAL_PORT, BAUD_RATE, ENCODING
+from settings import PRINTER_SERIAL_PORT, PRINTER_BAUD_RATE, ENCODING
 
 
 class Printer:
     def __init__(self):
-        self.printer = serial.Serial(SERIAL_PORT, BAUD_RATE)
+        self.printer = serial.Serial(PRINTER_SERIAL_PORT, PRINTER_BAUD_RATE)
 
     def reset(self):
         self.printer.write(constants.INIT)
@@ -41,26 +42,47 @@ class Printer:
         self.printer.write(constants.LF)
         self.printer.write(constants.FULL_CUT)
 
+    def write_text(self, text, line_width_mode="normal"):
+        if line_width_mode == "normal":
+            width = constants.LINE_WIDTH_NORMAL
+        elif line_width_mode == "wide":
+            self.printer.write(constants.WIDE_FONT)
+            width = constants.LINE_WIDTH_WIDE
+        else:
+            print("Warning: line_width_mode debe ser 'normal' o 'wide'. Usando 'normal' por defecto.")
+            width = constants.LINE_WIDTH_NORMAL
 
-    def write_print_mode(self, filename):
+        for chunk in [text[i:i+constants.BUFFER_SIZE] for i in range(0, len(text), constants.BUFFER_SIZE)]:
+            self.printer.write(chunk.ljust(width, " ").encode(ENCODING))
+        self.printer.write(constants.NORMAL_FONT)
+        self.printer.write(constants.LF)
+
+    def write_print_mode(self, filename=None, compressed=True, escaped=False):
         """Escritura en modo texto
         """
+        if compressed:
+            self.printer.write(constants.LINESPACE_HEADER + six.int2byte(18))
+        if filename is None:
+            print("ERROR: filename is None")
+            return
         with open(filename, "r") as lines:
             if len([x for x in lines if len(x) > constants.LINE_WIDTH_WIDE]) > 0:
                 width = constants.LINE_WIDTH_NORMAL
             else:
                 self.printer.write(constants.WIDE_FONT)
                 width = constants.LINE_WIDTH_WIDE
-            message = ""
 
         with open(filename, "r") as lines:
-            for line in lines:
-                if len(line) <= width:
-                    message += line.ljust(len(line) % width, " ")
+            for i, line in enumerate(lines):
+                if (i+1) % 20 == 0:
+                    time.sleep(5)
+                len_line = len(line)
+                if len_line <= width +1:
+                    self.printer.write(line.ljust(len(line) % width, " ").encode(ENCODING))
                 else:
-                    print(f"Warning: cada línea debe ser tener {width} caracteres o menos")
-                    message += line[:width]
-            self.printer.write(message.encode(ENCODING))
+                    print(f"Warning: cada línea debe ser tener {width} caracteres o menos. Tiene {len_line} caracteres, cortando...")
+                    self.printer.write(line[:width].encode(ENCODING))
+    
 
     def write_bitmap_mode(self, image, convert=True, width_density=False, cut=False):
         """Escritura en modo bitmap
@@ -69,13 +91,16 @@ class Printer:
         if convert:
             # Convertimos la imagen a escala de grises, luego a blanco y negro
             # e invertimos, ya que para la impresora 1 es negro y 0 es blanco.
+            base_width = 200
+            wpercent = (base_width / float(image.size[0]))
+            hsize = int((float(image.size[1]) * float(wpercent)))
+            image = image.resize((base_width, hsize), Image.Resampling.LANCZOS)
             image = image.convert("L")
             image = image.convert("1")
             image = ImageOps.invert(image)
 
         # Rotamos para leer de a columnas
         image = image.transpose(Image.ROTATE_270).transpose(Image.FLIP_LEFT_RIGHT)
-
         if width_density:
             m = b"\x01"
         else:
