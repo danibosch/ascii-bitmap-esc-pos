@@ -10,11 +10,11 @@ LINE_WIDTH_WIDE = 34
 #  ASCII codes
 # =======================
 
-HT = b"\x09"
-LF = b"\x0A"
-CR = b"\x0D"
+HT = b"\x09" # Horizontal tab
+LF = b"\x0A" # Line feed
+CR = b"\x0D" # Carriage return
 
-ESC = b"\x1B"
+ESC = b"\x1B" # Escape
 
 # =======================
 #  Special commands
