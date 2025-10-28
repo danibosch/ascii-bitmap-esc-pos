@@ -26,8 +26,10 @@ class PhotoMode(BaseMode):
                 break
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-            pressedKey = cv2.waitKey(1)
-            if pressedKey in [13, 32]: # Enter, space
+            #pressedKey = cv2.waitKey(1)
+            pressedKey = self._q.get()
+            print(f"Pressed key: {pressedKey}")
+            if pressedKey in [13, 32, "2"]: # Enter, space
                 cv2.imshow("webcam", np.zeros(frame.shape))
                 print("Imprimir?")
                 print("    [S] Sí!")
@@ -35,12 +37,12 @@ class PhotoMode(BaseMode):
                 print(">> ")
                 image = frame
                 d = datetime.now().strftime("%Y%m%d%H%M%S")
-                cv2.imwrite(os.path.join("photos", f'foto{d}.png'), image)
+                cv2.imwrite(os.path.join("src", "photos", f'foto{d}.png'), image)
                 mode = 0
-            elif pressedKey == ord("s"):
+            elif pressedKey in ["s", "4"]:
                 print("Imprimiendo...")
                 if mode == 0:
-                    self.printer.write_bitmap_mode(os.path.join("photos", f'foto{d}.png'))
+                    self.printer.write_bitmap_mode(os.path.join("src", "photos", f'foto{d}.png'))
                     self.printer.partial_cut()
                     mode = 1
                 print("[Enter o Space] Tomar una foto")

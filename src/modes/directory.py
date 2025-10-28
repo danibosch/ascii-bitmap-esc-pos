@@ -8,14 +8,14 @@ from src.modes.base import BaseMode
 class DirectoryMode(BaseMode):
     def run(self):
         while True:
-            draws = sorted(os.listdir("draws"))
+            draws = sorted(os.listdir(os.path.join("src", "draws")))
             print("Listado de archivos disponibles:")
             print("")
             for i, draw in enumerate(draws): 
                 print(f"    [{i}] {draw}")
             print("")
             print("    [Q] Salir ")
-            selection = input(">> ")
+            selection = self._q.get()
 
             if selection.lower() == "q":
                 break
@@ -44,8 +44,8 @@ class DirectoryMode(BaseMode):
 
     def _print(self, filename):
         if filename.endswith(".txt"):
-            self.printer.write_print_mode(os.path.join("draws", filename))
+            self.printer.write_print_mode(os.path.join("src", "draws", filename))
         elif filename.lower().endswith(".png") or filename.lower().endswith(".jpg"):
-            self.printer.write_bitmap_mode(os.path.join("draws", filename))
+            self.printer.write_bitmap_mode(os.path.join("src", "draws", filename))
         elif filename.lower().endswith(".json"):
-            pipeline = json.loads(os.path.join("draws", filename))
+            pipeline = json.loads(os.path.join("src", "draws", filename))
