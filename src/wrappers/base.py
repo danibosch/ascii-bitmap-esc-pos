@@ -13,4 +13,3 @@ for _, name, _ in pkgutil.iter_modules([os.path.dirname(__file__)]):
             if isinstance(item, type) and item.__module__ == f'src.wrappers.{name}':
                 __all__.append(item_name)
                 globals()[item_name] = item
-print(__all__)

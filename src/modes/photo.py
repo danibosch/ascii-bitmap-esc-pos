@@ -5,6 +5,7 @@ import numpy as np
 from datetime import datetime
 
 from src.modes.base import BaseMode
+from src.constants import Colors
 
 
 class PhotoMode(BaseMode):
@@ -16,7 +17,7 @@ class PhotoMode(BaseMode):
         stream.set(cv2.CAP_PROP_FRAME_HEIGHT, 200)
         ret, frame = stream.read()
         mode = 1
-        print("[Enter o Space] Tomar una foto")
+        print("[Enter o Space o T] Tomar una foto")
 
         while True:
             ret, frame = stream.read()
@@ -29,27 +30,32 @@ class PhotoMode(BaseMode):
             #pressedKey = cv2.waitKey(1)
             pressedKey = self._q.get()
             print(f"Pressed key: {pressedKey}")
-            if pressedKey in [13, 32, "2"]: # Enter, space
+            if pressedKey in [13, 32, "T", "t"]: # Enter, space, T
                 cv2.imshow("webcam", np.zeros(frame.shape))
                 print("Imprimir?")
-                print("    [S] Sí!")
-                print("    [N] No, sacar otra")
+                print(f"    [{Colors.GREEN}S{Colors.RESET}] Sí!")
+                print(f"    [{Colors.RED}N{Colors.RESET}] No, sacar otra")
                 print(">> ")
                 image = frame
                 d = datetime.now().strftime("%Y%m%d%H%M%S")
                 cv2.imwrite(os.path.join("src", "photos", f'foto{d}.png'), image)
                 mode = 0
-            elif pressedKey in ["s", "4"]:
+            elif pressedKey in [ord("s"), "S", "s"]:
                 print("Imprimiendo...")
                 if mode == 0:
+                    if self.wrapper is not None:
+                        print("Agregando wrapper...")
+                        self.wrapper.print_pre(self.printer)
                     self.printer.write_bitmap_mode(os.path.join("src", "photos", f'foto{d}.png'))
+                    if self.wrapper is not None:
+                        self.wrapper.print_post(self.printer)
                     self.printer.partial_cut()
                     mode = 1
                 print("[Enter o Space] Tomar una foto")
-            elif pressedKey == ord("n"):
+            elif pressedKey in [ord("n"), "N", "n"]:
                 print("[Enter o Space] Tomar una foto")
                 mode = 1
-            elif pressedKey == ord("q"):
+            elif pressedKey in [ord("q"), "Q", "q"]:
                 break
 
             if mode == 1:

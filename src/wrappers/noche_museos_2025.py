@@ -1,4 +1,4 @@
-class NocheDeLosMuseos2024:
+class NocheDeLosMuseos2025:
     def print_pre(self, printer):
         printer.write_text("NOCHE DE LOS MUSEOS 2025 | CYBERCIRUJAS")
 

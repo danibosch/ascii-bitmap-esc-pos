@@ -6,7 +6,7 @@ class BaseMode:
         self._q = input_queue
         self.printer = printer
         if wrapper is not None:
-            self.wrapper = getattr(wrappers, wrapper.replace("_", "").title())()
+            self.wrapper = getattr(wrappers, wrapper)()
         else:
             self.wrapper = None
 
