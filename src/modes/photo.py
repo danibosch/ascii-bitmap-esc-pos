@@ -1,5 +1,6 @@
 import cv2
 import os
+import queue
 import numpy as np
 
 from datetime import datetime
@@ -17,7 +18,9 @@ class PhotoMode(BaseMode):
         stream.set(cv2.CAP_PROP_FRAME_HEIGHT, 200)
         ret, frame = stream.read()
         mode = 1
+        image = None
         self._print_take_photo()
+        cv2.imshow("webcam", frame)
 
         while True:
             ret, frame = stream.read()
@@ -27,9 +30,16 @@ class PhotoMode(BaseMode):
                 break
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-            #pressedKey = cv2.waitKey(1)
-            pressedKey = self._q.get()
-            print(f"Pressed key: {pressedKey}")
+            # Requerido para que funcione cv2.imshow()
+            cv2.waitKey(1)
+            
+            # Chequear queue sin bloquear
+            pressedKey = None
+            try:
+                pressedKey = self._q.get_nowait()
+            except queue.Empty:
+                pass
+            
             if pressedKey in [13, "T", "t"]: # Enter, T
                 cv2.imshow("webcam", np.zeros(frame.shape))
                 self._print_print()
