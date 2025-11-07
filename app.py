@@ -8,14 +8,15 @@ from src.serials.keyboard import Keyboard
 from src.modes.directory import DirectoryMode
 from src.modes.photo import PhotoMode
 from src.wrappers.base import __all__ as wrappers
+from src.constants import Colors
 
 
 if __name__ == "__main__":
     print("***************************************")
     print("*       |WW|                          *")
-    print("*      _|  |_       Tickepolaroid     *")
+    print(f"*      _|  |_        {Colors.CYAN}Tikepolaroid{Colors.RESET}     *")
     print("*     ( |__| )                        *")
-    print("*    /________\   Imágenes impresas   *")
+    print("*    /________\\   Imágenes impresas   *")
     print("*   |       o  |      en 1-bit        *")
     print("*   |__________|    por @danipupy     *")
     print("*                                     *")
