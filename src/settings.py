@@ -2,7 +2,7 @@
 #  Printer settings
 # =============================
 
-PRINTER_SERIAL_PORT = "/dev/ttyUSB1"
+PRINTER_SERIAL_PORT = "/dev/ttyUSB0"
 PRINTER_BAUD_RATE = 4800
 
 # Char encoding
@@ -14,5 +14,5 @@ ENCODING = "cp850" #"ISO8859-15" #"cp858" #"cp850"
 # =============================
 #  Buttons settings
 # =============================
-BUTTONS_SERIAL_PORT = "/dev/ttyUSB0"
+BUTTONS_SERIAL_PORT = "/dev/ttyUSB1"
 BUTTONS_BAUD_RATE = 9600
